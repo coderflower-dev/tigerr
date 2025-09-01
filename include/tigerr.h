@@ -1,7 +1,7 @@
 #pragma once
 /*
 	TiGErr C++ Error logging library
-	Version 1.0.0
+	Version 1.0.1
 	Copyright 2025 Timur Gabdrakhmanov. MIT License.
 */
 #include <iostream>
@@ -9,18 +9,36 @@
 #include <fstream>
 #include <filesystem>
 
+#ifndef _DEBUG
+#define TIGERR_RELEASE_MODE
+#endif
+
 namespace tg {
 
+	inline void LogToFile(std::string filePath, std::string contents) {
+		std::filesystem::path fsPath(filePath);
+		if (std::filesystem::exists(fsPath)) {
+			std::ofstream file(filePath, std::ios::app);
+			if (!file.is_open()) {
+				std::cout << "LogError Cannot Open Log File! \"" << filePath << "\". Contact Developer with Code 201!\n";
+			}
+			file << contents;
+		}
+		else {
+			std::cout << "LogError Cannot Find Log File! \"" << filePath << "\". Contact Developer with Code 200!\n";
+		}
+	}
+
 	enum Severity {
+		DEBUG, // Used for debugging messages, disabled when Release build is selected in MSVC or the release macro is enabled manually
 		NOTICE, // Used for simple logging
 		ALERT, // An error that is not good to see but not mission critical
 		FAILURE, // A critical failure
 	};
 
 	enum LogOutput {
-		CONSOLE, // Prints out the the standard application console
-		FILE, // Logs to file
-		CONSOLE_AND_FILE, // Both prints and logs
+		CONSOLE = 1u << 0, // Prints out the the standard application console
+		FILE    = 1u << 1, // Logs to file
 	};
 
 	/// <summary>
@@ -31,7 +49,7 @@ namespace tg {
 	/// <param name="errorSeverity"> - Criticality of the error </param>
 	/// <param name="asciiColor"> - Toggle for color usage when printing to console </param>
 	/// <param name="outout"> - Enum controlling the output of the error </param>
-	/// <param name="logPath"> - Path for Log file, only used when output is set to FILE or CONSOLE_AND_FILE</param>
+	/// <param name="logPath"> - Path for Log file, only used when output is set to FILE</param>
 	inline void LogError(std::string errorLabel, std::string errorDetails, Severity errorSeverity, bool asciiColor, LogOutput output, std::string logPath = "") {
 		
 		std::string message = "";
@@ -40,6 +58,7 @@ namespace tg {
 		std::string resetCode = "\033[0m";
 
 		switch (errorSeverity) {
+			case DEBUG: prefix = "DEBUG: "; colorCode = "\033[1;37m"; break;
 			case NOTICE: prefix = "NOTICE: "; colorCode = resetCode; break;
 			case ALERT: prefix = "ALERT: ";  colorCode = "\033[33m"; break;
 			case FAILURE: prefix = "FAILURE: "; colorCode = "\033[1;31m"; break;
@@ -48,25 +67,26 @@ namespace tg {
 
 		message = (prefix + errorLabel + ": " + errorDetails + "\n");
 		
-		if (output == FILE || output == CONSOLE_AND_FILE) {
-			std::filesystem::path fsPath(logPath);
-			if (std::filesystem::exists(fsPath)) {
-				std::ofstream file(logPath);
-				if (!file.is_open()) {
-					std::cout << "LogError Cannot Open Log File! \"" << logPath << "\". Contact Developer with Code 201!\n";
-				}
-				file << message;
+		if (output & FILE) {
+			if (errorSeverity == DEBUG) {
+				#ifndef TIGERR_RELEASE_MODE
+					LogToFile(logPath, message); // Only logs to file if debug mode is on and the DEBUG log severity is selected
+				#endif
 			}
-			else {
-				std::cout << "LogError Cannot Find Log File! \"" << logPath << "\". Contact Developer with Code 200!\n";
-			}
+			else LogToFile(logPath, message);
+			
 		}
 
 		if (asciiColor)
 			message = colorCode + message + resetCode;
 
-		if (output == CONSOLE || output == CONSOLE_AND_FILE) {
-			std::cout << message;
+		if (output & CONSOLE) {
+			if (errorSeverity == DEBUG) {
+				#ifndef TIGERR_RELEASE_MODE
+				std::cout << message; // Only prints this message when RELEASE MODE is not defined (aka Debug Mode)
+				#endif
+			} else std::cout << message;
+			
 		}
 		
 
