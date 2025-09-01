@@ -11,7 +11,7 @@ Features a single-header system with only a dependancy for C++17<br>
 | Colors     | ✅           | ✅    | ✅    |
 | Header-only  | ✅          | ✅    | ✅    |
 | Compile-time filtering  | ✅          | ✅    | ✅    |
-| 101 lines of code  | ✅          | ❌    | ❌    |
+| 100 lines of code  | ✅          | ❌    | ❌    |
 | Rotating Log Files  | ❌          | ✅    | ✅    |
 | Timestamps in Logs  | ❌          | ✅    | ✅    |
 
