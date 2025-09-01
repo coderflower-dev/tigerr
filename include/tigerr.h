@@ -1,7 +1,7 @@
 #pragma once
 /*
 	TiGErr C++ Error logging library
-	Version 1.0.1
+	Version 1.0.1B
 	Copyright 2025 Timur Gabdrakhmanov. MIT License.
 */
 #include <iostream>
@@ -9,7 +9,7 @@
 #include <fstream>
 #include <filesystem>
 
-#ifndef _DEBUG
+#ifdef NDEBUG
 #define TIGERR_RELEASE_MODE
 #endif
 
@@ -37,9 +37,11 @@ namespace tg {
 	};
 
 	enum LogOutput {
-		CONSOLE = 1u << 0, // Prints out the the standard application console
-		FILE    = 1u << 1, // Logs to file
+		CONSOLE    = 1u << 0, // Prints out the the standard application console
+		FILE       = 1u << 1, // Logs to file
 	};
+
+
 
 	/// <summary>
 	/// Advanced error logging function
@@ -50,7 +52,7 @@ namespace tg {
 	/// <param name="asciiColor"> - Toggle for color usage when printing to console </param>
 	/// <param name="outout"> - Enum controlling the output of the error </param>
 	/// <param name="logPath"> - Path for Log file, only used when output is set to FILE</param>
-	inline void LogError(std::string errorLabel, std::string errorDetails, Severity errorSeverity, bool asciiColor, LogOutput output, std::string logPath = "") {
+	inline void LogError(std::string errorLabel, std::string errorDetails, Severity errorSeverity, bool asciiColor, LogOutput output, std::string logPath) {
 		
 		std::string message = "";
 		std::string prefix = "";
@@ -88,7 +90,6 @@ namespace tg {
 			} else std::cout << message;
 			
 		}
-		
 
 	}
 }
