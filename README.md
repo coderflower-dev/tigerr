@@ -12,9 +12,8 @@ Features a single-header system with only a dependancy for C++17<br>
 | Header-only  | ✅          | ✅    | ✅    |
 | Compile-time filtering  | ✅          | ✅    | ✅    |
 | 101 lines of code  | ✅          | ❌    | ❌    |
-| Rotating Log Files  | ⭐          | ✅    | ✅    |
-| Timestamps in Logs  | ⭐          | ✅    | ✅    |
+| Rotating Log Files  | ❌          | ✅    | ✅    |
+| Timestamps in Logs  | ❌          | ✅    | ✅    |
 
-⭐ - May be added in the future
 
-The documentation and error code lookup is in the header file, it is pretty simple and the only function `LogError`, has explenation for each parameter.
+The documentation and error code lookup is in the header file, it is pretty simple and the function `LogError` has explanation for each parameter.
