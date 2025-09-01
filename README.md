@@ -28,7 +28,7 @@ Features a single-header system with only a dependancy for C++17<br>
     - `NOTICE` - Simple logging
     - `ALERT` - An error that is bad but not critical
     - `FAILURE` - Mission-critical problem
-- `asciiColor` - Boolean which controls wether or not to use ASCII color in the console
+- `asciiColor` - Boolean which controls whether or not to use ASCII color in the console
 - `output` - Enum which controls the output of the error
     - `CONSOLE` - Prints error to console
     - `FILE` - Prints to a specified log file
