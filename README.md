@@ -13,3 +13,5 @@ Features a single-header system with only a dependancy for C++17<br>
 | Compile-time filtering  | ✅          | ✅    |
 
 The documentation and error code lookup is in the header file, it is pretty simple and the only function `LogError`, has explenation for each parameter.
+
+[Changelog](CHANGELOG.MD)
