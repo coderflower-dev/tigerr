@@ -34,3 +34,8 @@ Features a single-header system with only a dependancy for C++17<br>
     - `FILE` - Prints to a specified log file
     - Alternatively you can use 2+ of these flags `CONSOLE | FILE` -> Prints both to console and file
 - `logPath` - Path to log file
+
+## Error codes
+- Code 100 - Incorrect Severity code, check your "errorSeverity" parameter for correctness
+- Code 200 - Couldn't find the specified log file, check "logPath"
+- Code 201 - Your desired logPath could not be opened
